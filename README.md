@@ -19,7 +19,7 @@ statsd = Statsd(
     # каждый ::flush_interval:: секунд клиент будет скидывать метрики в Statsd,
     # даже если не превышен ::pool_capacity::
     flush_interval=5,
-    # (опционально) инстанс scheduler'a aiojobs,
+    # (опционально) инстанс scheduler'a aiojobs
     # используется для старта периодической очистки в отдельной таске
     # если не передан, будет инициализирован новый scheduler 
     scheduler=app['AIOJOBS_SCHEDULER']
