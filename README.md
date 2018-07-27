@@ -7,6 +7,7 @@ pip install git+https://github.com/vitkarpenko/async-statsd.git@branch
 
 ### Использование
 ```python
+from async_statsd import Statsd
 statsd = Statsd(
     # хост Statsd и порт, который он слушает
     address=('127.0.0.1', 8125),
