@@ -22,7 +22,7 @@ class Statsd:
         flush_interval: int = 10,
         scheduler: Scheduler = None
     ):
-        self.address = address,
+        self.address = address
         self.prefix = prefix
         self.pool_capacity = pool_capacity
         self.flush_interval = flush_interval
