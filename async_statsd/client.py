@@ -20,7 +20,7 @@ class Statsd:
         prefix: str = '',
         pool_capacity: int = 5000,
         flush_interval: int = 10,
-        scheduler: Scheduler = create_scheduler()
+        scheduler: Scheduler = None
     ):
         self.address = address,
         self.prefix = prefix
@@ -36,6 +36,8 @@ class Statsd:
         self.transport, self.protocol = await loop.create_datagram_endpoint(
             asyncio.DatagramProtocol, remote_addr=self.address
         )
+        if not self.scheduler:
+            self.scheduler = await create_scheduler()
         await self.scheduler.spawn(self.periodic_flush())
 
     def close(self):
