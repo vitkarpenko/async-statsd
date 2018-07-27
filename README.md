@@ -2,7 +2,7 @@
 
 ### Установка
 ```
-pip install git+http://cri.atol.ru/bitbucket/scm/s280/asyncio-statsd.git@branch
+pip install git+https://github.com/vitkarpenko/async-statsd.git@branch
 ```
 
 ### Использование
