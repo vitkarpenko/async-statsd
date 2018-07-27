@@ -61,7 +61,7 @@ class Statsd:
         self._push_message(f'{name}:{count}|c')
 
     def _push_message(self, message: str):
-        self.messages.append(f'cct_{self.prefix}.{message}')
+        self.messages.append(f'{self.prefix}.{message}')
         if len(self.messages) >= self.pool_capacity:
             self.flush()
 
