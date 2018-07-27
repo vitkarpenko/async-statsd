@@ -16,7 +16,10 @@ statsd = Statsd(
     # при достижении указанного значения все метрики объединяются в UDP-пакет и скидываются в Statsd
     pool_capacity=1000,
     # каждый ::flush_interval:: секунд клиент будет скидывать метрики в Statsd, даже если не превышен ::pool_capacity::
-    flush_interval=5
+    flush_interval=5,
+    # (опционально) инстанс scheduler'a aiojobs, используется для старта периодической очистки в отдельной таске
+    # если не передан, будет инициализирован новый scheduler 
+    scheduler=app['AIOJOBS_SCHEDULER']
 )
 await statsd.connect()
 with statsd.timer('iseedeadpeople'):
