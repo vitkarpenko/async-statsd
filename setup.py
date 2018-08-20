@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='async-statsd',
-    version='0.1.4',
+    version='0.1.5',
     description='Модуль для асинхронной отправки метрик в Statsd по UDP',
     packages=['async_statsd'],
     license='MIT License',
