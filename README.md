@@ -1,27 +1,28 @@
-## Модуль для асинхронной отправки метрик в Statsd по UDP
+## Module for processing metrics to Statsd by UDP with asyncio
 
-### Установка
+### Install
 ```
 pip install git+https://github.com/vitkarpenko/async-statsd.git@branch
 ```
 
-### Использование
+### Usage
 ```python
 from async_statsd import Statsd
 statsd = Statsd(
-    # хост Statsd и порт, который он слушает
+    # Host and port of Statsd server
     address=('127.0.0.1', 8125),
-    # метрика ::metric_name:: запишется по адресу stats.{prefix}.{metric_name}
+    # Metric will be saved by 
+    # stats.{prefix}.{metric_name} address
     prefix='test',
-    # количество метрик в буффере.
-    # при достижении указанного значения все метрики объединяются в UDP-пакет и скидываются в Statsd
+    # Maximum number of metrics in the pool
+    # When the maximum pool size is reached, 
+    # all metrics will be sent to Statsd by UDP
     pool_capacity=1000,
-    # каждый ::flush_interval:: секунд клиент будет скидывать метрики в Statsd,
-    # даже если не превышен ::pool_capacity::
+    # Period in seconds when client will send 
+    # all metrics from pool to Statsd,
+    # even when pool is not full
     flush_interval=5,
-    # (опционально) инстанс scheduler'a aiojobs
-    # используется для старта периодической очистки в отдельной таске
-    # если не передан, будет инициализирован новый scheduler 
+    # aiojobs's scheduler instance (optional)
     scheduler=app['AIOJOBS_SCHEDULER']
 )
 await statsd.connect()
