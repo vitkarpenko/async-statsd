@@ -1,0 +1,11 @@
+.idea/
+*.pyc
+/.cache
+/lib
+/__pycache__
+.coverage
+.pypirc
+.pytest_cache
+/docs/build
+/build
+*.egg-info
