@@ -2,8 +2,8 @@ from distutils.core import setup
 
 setup(
     name='async-statsd',
-    version='0.1.4',
     description='Module for processing metrics to Statsd by UDP with asyncio',
+    version='0.1.5',
     packages=['async_statsd'],
     license='MIT License',
     long_description=open('README.md').read(),

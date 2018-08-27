@@ -67,6 +67,9 @@ class Statsd:
     def send_counter(self, name: str, count: int) -> None:
         self._push_message(f"{name}:{count}|c")
 
+    def send_gauge(self, name: str, count: int) -> None:
+        self._push_message(f'{name}:{count}|g')
+
     def _push_message(self, message: str):
         self.messages.append(f"{self.prefix}.{message}")
         if len(self.messages) >= self.pool_capacity:
