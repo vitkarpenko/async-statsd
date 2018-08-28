@@ -9,19 +9,26 @@ from aiojobs import Scheduler
 
 
 class Statsd:
-    """ Осуществляет асинхронную отправку статистики в Statsd по UDP.
-
-    Копит метрики в пуле, отправляет при достижении максимального объёма пула ::pool_size::
-    и с определённой периодичностью в секундах ::send_period::
-    """
     def __init__(
         self,
-        address: Tuple[str, int] = ('127.0.0.1', 8125),
-        prefix: str = '',
+        address: Tuple[str, int] = ("127.0.0.1", 8125),
+        prefix: str = "",
         pool_capacity: int = 5000,
         flush_interval: int = 10,
-        scheduler: Scheduler = None
+        scheduler: Scheduler = None,
     ):
+        """
+        Async statsd client.
+        Saves metrics in the pool, and sends it
+        when the maximum pool size is reached (pool_capacity)
+        or with a certain periodicity in seconds (flush_interval)
+        :param address: Host and port of Statsd server
+        :param prefix: Metric will be saved by stats.{prefix}.{metric_name} address
+        :param pool_capacity: Maximum number of metrics in buffer
+        :param flush_interval: Period in seconds when client will send all metrics
+        from pool to Statsd, even when pool is not full
+        :param scheduler: aiojobs's scheduler instance (optional)
+        """
         self.address = address
         self.prefix = prefix
         self.pool_capacity = pool_capacity
@@ -45,7 +52,7 @@ class Statsd:
 
     def flush(self):
         if self.transport and self.messages:
-            packet = '\n'.join(self.messages)
+            packet = "\n".join(self.messages)
             self.messages = list()
             self.transport.sendto(packet.encode())
 
@@ -55,16 +62,16 @@ class Statsd:
             self.flush()
 
     def send_timer(self, name: str, duration: int) -> None:
-        self._push_message(f'{name}:{duration}|ms')
+        self._push_message(f"{name}:{duration}|ms")
 
     def send_counter(self, name: str, count: int) -> None:
-        self._push_message(f'{name}:{count}|c')
+        self._push_message(f"{name}:{count}|c")
 
     def send_gauge(self, name: str, count: int) -> None:
         self._push_message(f'{name}:{count}|g')
 
     def _push_message(self, message: str):
-        self.messages.append(f'{self.prefix}.{message}')
+        self.messages.append(f"{self.prefix}.{message}")
         if len(self.messages) >= self.pool_capacity:
             self.flush()
 
@@ -74,6 +81,6 @@ class Statsd:
         try:
             yield
         finally:
-            # Statsd ждёт микросекунды, time() возвращает секунды
+            # Statsd needs microseconds while time() returns seconds
             duration = round((time() - start) * 1000)
             self.send_timer(name, duration)
